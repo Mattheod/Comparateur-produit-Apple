@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparateur de Produits Tech</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #000000, #333333);
+            color: #ffffff; 
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        .product {
+            border: 1px solid #444; 
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5); 
+        }
+        .product img {
+            max-width: 150px;
+        }
+        .product-info {
+            max-width: 100%;
+            text-align: center;
+        }
+        .supplier-links {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .supplier-links a {
+            display: block;
+            margin: 5px 0;
+            color: #00ccff; 
+            text-decoration: none;
+        }
+        .supplier-links a:hover {
+            text-decoration: underline;
+        }
+        .renew-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #00ccff;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .renew-btn:hover {
+            background-color: #0099cc;
+        }
+
+        .top-right-image {
+    position: absolute;
+    top: 35px; 
+    right: 400px; 
+    width: 60px; 
+    height: auto; 
+    z-index: 1000;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Comparateur de Produits Apple</h1>
+        <div id="product-list">
+        </div>
+        <button class="renew-btn" onclick="refreshProducts()">Renouveler les produits</button>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Apple_logo_grey.svg" alt="Image en haut à droite" class="top-right-image">
+
+    </div>
+
+    <script>
+        const products = [
+            {
+                name: "MacBook Air 13",
+                price: "1199€",
+                image: "https://www.dxm.fr/wp-content/uploads/2024/03/MBA-M1-Argent-1-600x600.png",
+                description: "Un ordinateur portable performant pour les professionnels.",
+                suppliers: [
+                    { name: "Amazon", url: "https://www.amazon.fr/Apple-2024-Portable-MacBook-Pouces/dp/B0CX26BG23/ref=sr_1_2_sspa?dib=eyJ2IjoiMSJ9.1FO401AAu6ZE9aZfSuzQ2ni2YOyexr1YMSRo95wWnjvgz8wa_I9Gef3APPkgUlTnagHWySsj0mQFUG7N7IYVKxPNhUgBdrMX3UYOB_PYGkGCy3Z2zpWVPbZlOXw9EAHt4KOrRxjmiQS_Z2q21_xbaBLktxVPs2W9-MWN7W5Ap93kLNqgvbQzN80Jo-zXAKB3-Jv1XK_JLAh95tHyUFDsuXDcHzmhH_dFw7wvoqC3mJVSFeGcPjrcxszrwA5xfxddJg5zA4qTDtMPp7VaeMfTD8Ai-gQEOX6y4VdWfSyDExA.8gd-_W-GmfDzYxg1bQZk6Vz4FhM39PT3PxH1wJy7sMw&dib_tag=se&keywords=MacBook+Air&qid=1728489011&sr=8-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1", price: "1223.00€" },
+                    { name: "Fnac", url: "https://urlrhttps://www.fnac.com/Apple-MacBook-Air-13-256-Go-SSD-8-Go-RAM-Puce-M2-CPU-8-coeurs-GPU-8-coeurs-Minuit-Nouveau/a16685160/w-4?Origin=SEA_GOOGLE_PLA_MICRO&esl-k=google-ads%7Cnx%7Cc%7Cm%7Ck%7Cp%7Ct%7Cdc%7Ca21146420575%7Cg21146420575&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfBy9D3BylygkGuB5wY5FGRlQnZnpbc8E0jPHUwRSK_4DBsLt3pMvEIaAkT6EALw_wcB&gclsrc=aw.dsme/sKMkn", price: "999.00€" },
+                    { name: "Darty", url: "https://www.darty.com/nav/achat/informatique/macbook_imac_ipad/macbook/apple_newmba13_m2_8_256_bl.html?lpoid=b6e61204f0ce408f204afae37df50e6a40cc401c&esl-k=google-ads%7Cnx%7Cc%7Cm%7Ck%7Cp%7Ct%7Cdc%7Ca20128662944%7Cg20128662944&dartycid=sea_shopping-online_Pmax-PLA-All-Informatique_adgroup_&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfBYC-6GQGUeW5017kPbmkoUBY_kJY654zo61styLW5b5z38iUsjpGIaAkkJEALw_wcB&gclsrc=aw.ds", price: "999.00€" },
+                    { name: "Boulanger", url: "https://www.boulanger.com/ref/1180187?store=&/?at_medium=sl&at_campaign=[pla_css_keyade]&at_platform=google&at_campaign_group=20933701657&gclsrc=aw.ds&gad_source=1&kClkId=241009175323658046&kVsId=241009175323653145&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfBqC3qwWnr7nqnYyPtwHeUfB2oHN2nKBcnhYeA2bwraNDjSw2XSvgwaAqH2EALw_wcB", price: "1099.00€" },
+                    { name: "LDLC", url: "https://www.ldlc.com/fiche/PB00500982.html", price: "1199.00€" }
+                ]
+            },
+            {
+                name: "Iphone 16",
+                price: "969€",
+                image: "https://c0.lestechnophiles.com/images.frandroid.com/wp-content/uploads/2024/08/apple-iphone-16-frandroid-2024-768x768.png?avif=1&key=52d7aa19",
+                description: "Le dernier modèle de smartphone apple.",
+                suppliers: [
+                    { name: "Amazon", url: "https://www.amazon.fr/Apple-iPhone-16-128-Go/dp/B0DGJ2N566/ref=asc_df_B0DGJ2N566/?tag=googshopfr-21&linkCode=df0&hvadid=707848093410&hvpos=&hvnetw=g&hvrand=6161107090636032908&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9056173&hvtargid=pla-2429987371677&psc=1&mcid=b8ae7d058cc53446b9d94c4be134f70b&gad_source=1", price: "969.00€" },
+                    { name: "Fnac", url: "https://www.fnac.com/Apple-iPhone-16-6-1-5G-128-Go-Double-SIM-Outremer/a19813601/w-4?Origin=SEA_GOOGLE_PLA_GPS&esl-k=google-ads%7Cnx%7Cc%7Cm%7Ck%7Cp%7Ct%7Cdc%7Ca19924981381%7Cg19924981381&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfBMNOZ4PHPKIn3ohBhZGY_XhTvk_XaLnBV23EZBtnvc6c8KVsEUiogaAo_eEALw_wcB&gclsrc=aw.ds", price: "969.00€" },
+                    { name: "Darty", url: "https://www.darty.com/nav/achat/telephonie/telephone_mobile_seul/iphone/apple_iph16_128go_vlt_1.html?esl-k=google-ads%7Cnx%7Cc%7Cm%7Ck%7Cp%7Ct%7Cdc%7Ca20131784524%7Cg20131784524&dartycid=sea_shopping-online_Pmax-PLA-All-Telephonie-Objets-Connectes_adgroup_&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfBPlYprudXOdTA1CkCGqbsgHW-pQik0WryTOYq5wr9nzR6zKHJHOnIaAm_uEALw_wcB&gclsrc=aw.ds", price: "969.99€" },
+                    { name: "Cdiscount", url: "https://www.cdiscount.com/telephonie/telephone-mobile/apple-iphone-16-128gb-teal/f-1440402-ip16128teal.html?cid=search_pla&cm_mmc=PLA!COR!!CD!17321031537!m102400825_pIP16128TEAL_l9056173_tpla-299311801670__a140645654801&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfBtzuULFCQkzidmAmYcnD8BWGDvzMZzur33SexcXBbiHbro3rUCdtEaApcrEALw_wcB", price: "969.00€" },
+                    { name: "SFR", url: "https://www.sfr.fr/apple-iphone16-noir-128go?forfait=SFR_RFL1_250GO_5G_G1FH%7CG1FH&paymentmode=COMPTANT&esl-k=google%7Cng%7Cc544583338028%7Cm%7Ck%7Cp%7Ct%7Cdc%7Ca127137336419%7Cg14579758223&gclsrc=aw.ds&sfrcpid=t35_google_SFR-FR-TMGP_hm-shp_device_arcane-top&utm_source=google&utm_medium=cpc&utm_campaign=hm-shp_device_arcane-top&utm_term=&utm_content=&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfAKO-7urTQyaU_P0xzFlr5tCz6pyjESfxvSb_n4R4drBVx_Gd-0BpgaAulBEALw_wcB", price: "969.00€" }
+                ]
+            },
+            {
+                name: "AirPods 4",
+                price: "199€",
+                image: "https://inventstore.in/wp-content/themes/invent/airpods_pro_2_web-img/hero_airpods_pro_2_medium.png?600003f9e470",
+                description: "Un casque audio avec réduction de bruit active.",
+                suppliers: [
+                    { name: "Amazon", url: "https://www.amazon.fr/Apple-personnalis%C3%A9-r%C3%A9sistance-Transpiration-dautonomie/dp/B0DGHYDYJL/ref=sr_1_2_sspa?dib=eyJ2IjoiMSJ9.hsx6wD7ellU25XK5IoAFSD_fbsLP0EzkpNdnG_u4jjmVDlHLH5VGEnW5F0Jj4eaQBKFOHq7cNhqOC3aWcHGWolAv1JBvByQB7Ubn6ynxy6Ml9d_Cqu-s5mDebto5SAqVg24pyxb33F_1nz8FfM3ffzV-6Yn-PDXWh6JtqEqlAOmp4LuvEGpuPf5AkdWwhY4QAbsI2IJ6JGQnDOByOvP0eAjSYx_gJ7xchz3PBArKrCKYiveLX9p8MEbf2rbuNPixl1CExUmaWZ_gdbc3YIkyanECiR5g1W1bgB1KCC_VBNM.Tu7MS7eXyMcgz9XmpO1Eb-2hU7yIoLocnSeNCWMtQEU&dib_tag=se&keywords=airpods&qid=1728490482&sr=8-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1", price: "199.00€" },
+                    { name: "Fnac", url: "https://www.fnac.com/Apple-Airpods-4-Blanc-avec-Boitier-de-charge-USB-C-Ecouteurs-sans-fil-avec-reduction-active-du-bruit/a20833053/w-4?oref=00000000-0000-0000-0000-000000000000&storecode=4501&Origin=SEA_GOOGLE_PLA_SON&esl-k=sem-google%7Cnx%7Cc%7Cm%7Ckpla%7Cp%7Ct%7Cdc%7Ca%7Cg19877235751&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfBZsukPMFI0s92KURIz6U8r_uklRSD3ju4XQpFXJbGu-vBZAc1pv3UaAmRBEALw_wcB&gclsrc=aw.ds", price: "199.00€" },
+                    { name: "Darty", url: "https://www.darty.com/nav/achat/accessoires/casque_ecouteurs/casque_intra-auriculaire/apple_airpods_4_anc.html?store=907059&esl-k=google-ads%7Cnx%7Cc%7Cm%7Ck%7Cp%7Ct%7Cdc%7Ca19876433165%7Cg19876433165&dartycid=sea_shopping-local_Pmax-LIA-ALL-Son-Hifi_adgroup_&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfD2RJGJViuHJaGOmH2o3GFuQC0L4TB--jTdKigej11OfnqAsTTFy_AaAhW2EALw_wcB&gclsrc=aw.ds", price: "199.00€" },
+                    { name: "Boulanger", url: "https://www.boulanger.com/ref/1212702", price: "199.00€" },
+                    { name: "Cdiscount", url: "https://www.cdiscount.com/telephonie/accessoires-portable-gsm/apple-airpods-4-avec-reduction-active-du-bruit/f-144201101-airpods4noise.html?cid=search_pla&cm_mmc=PLA!COR!!CD!17321031537!m102400825_pAIRPODS4NOISE_l9056173_tpla-299311801670__a140645654801&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfAJxLBlmi79yskjp9DlejQFWiZNvgIVMt4dZgmFjVjdBz-PpmV0-EwaAmh8EALw_wcB", price: "199.00€" }
+                ]
+            },
+            {
+                name: "Apple Watch",
+                price: "249€",
+                image: "https://www.pngplay.com/wp-content/uploads/9/Apple-Watch-Transparent-Free-PNG.png",
+                description: "Une montre connectée pour suivre vos activités sportives.",
+                suppliers: [
+                    { name: "Amazon", url: "https://www.amazon.fr/Apple-g%C3%A9n%C3%A9ration-Smartwatch-Aluminium-Bracelet/dp/B0CHX58PZC/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.Fr0D5FnF9pH8s3gQlAq6sfqn7GvPEESnUSXncaqctr842aqGncm2TzKN7wtr1P3pvL68EAsXUpOC37PshT8L4uZmUV1WuQlLlq3CK9R14ndQby_Th04gDJHHXIKl19vHnnlLE3XXCjREDUV-0gg6zkmtLsPCladIoIQeU5abCm58Bm_2nqTbuNypO-JylnsOpFNZZKbl5HAvOSbrqUESC1XcNx_3wvaEgEbJIbKhPYZl8DACgk3bQ1FkHECFEvCJHfLuiRaxA76Aem9SzqYUakNMXb-seZFb_MokVrQnQYk.oDyQGmXPk6bmb0ATYM_7a9QVlo2g76zJuJ1AsM6ngCY&dib_tag=se&keywords=Apple+Watch&qid=1728490967&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1", price: "232.00€" },
+                    { name: "Fnac", url: "https://www.fnac.com/Apple-Watch-SE-GPS-boitier-en-Aluminium-Minuit-de-40-mm-avec-bracelet-sport-Minuit-S-M/a17330104/w-4?Origin=SEA_GOOGLE_PLA_MICRO&esl-k=google-ads%7Cnx%7Cc%7Cm%7Ck%7Cp%7Ct%7Cdc%7Ca19924861666%7Cg19924861666&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfBCYbyeYyqCfveqaqt9cwo3LXBJVFQ_bZB0OKzNMvOatPPfffsfeKEaApHKEALw_wcB&gclsrc=aw.ds", price: "249.00€" },
+                    { name: "Darty", url: "https://www.darty.com/nav/achat/telephonie/apple_watch/apple_watch/apple_se40bks_m.html?lpoid=77f845c0f2ac8b2d45eaa90bc5971b73f9d49fb7&esl-k=google-ads%7Cnx%7Cc%7Cm%7Ck%7Cp%7Ct%7Cdc%7Ca20131784524%7Cg20131784524&dartycid=sea_shopping-online_Pmax-PLA-All-Telephonie-Objets-Connectes_adgroup_&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfDflcdUHnuRIQVBGlbQt9gpKqQtYYvD12cYhwqhFG0_ddbPQc9cKlQaAhfOEALw_wcB&gclsrc=aw.ds", price: "249.00€" },
+                    { name: "Cdiscount", url: "https://www.cdiscount.com/telephonie/objets-connectes/apple-watch-se-gps-40mm-boitier-midnight-alumi/f-1447109-watse40midml.html?cid=search_pla&cm_mmc=PLA!COR!!CD!17321031537!m102400825_pWATSE40MIDML_l9056173_tpla-299311801670__a140645654801&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfA2vx-OiE8o6jMmEApD9S9xHTUeTZY6UYco7ktXVOv8xubMkoSsIXgaAm_wEALw_wcB", price: "239.00€" },
+                    { name: "Boulanger", url: "https://www.boulanger.com/ref/1196381", price: "279.00€" }
+                ]
+            }
+        ];
+
+        function displayProducts(productArray) {
+            const productList = document.getElementById("product-list");
+            productList.innerHTML = ''; 
+
+            productArray.forEach(product => {
+                const productDiv = document.createElement("div");
+                productDiv.classList.add("product");
+
+                
+                let supplierLinks = '<div class="supplier-links"><strong>Liens vers fournisseurs :</strong>';
+                product.suppliers.forEach(supplier => {
+                    supplierLinks += `
+                        <a href="${supplier.url}" target="_blank">
+                            ${supplier.name} - Prix : ${supplier.price}
+                        </a>`;
+                });
+                supplierLinks += '</div>';
+
+                
+                productDiv.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="product-info">
+                        <h2>${product.name}</h2>
+                        <p>${product.description}</p>
+                        <p><strong>Prix recommandé : ${product.price}</strong></p>
+                        ${supplierLinks}
+                    </div>
+                `;
+                productList.appendChild(productDiv);
+            });
+        }
+
+        function refreshProducts() {
+            
+            const shuffledProducts = products.sort(() => 0.5 - Math.random());
+            displayProducts(shuffledProducts);
+        }
+
+        
+        window.onload = function() {
+            refreshProducts();
+        }
+    </script>
+</body>
+</html>
